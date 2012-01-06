@@ -26,22 +26,23 @@ end
 perlbrew_root = node['perlbrew']['perlbrew_root']
 perlbrew_bin = "#{perlbrew_root}/bin/perlbrew"
 
+directory perlbrew_root
+
 # if we have perlbrew, upgrade it
-bash "perlbrew self-upgrade" do
-  command = "#{perlbrew_bin} self-upgrade"
+# XXX is this really a good idea?
+execute "perlbrew self-upgrade" do
   environment ({'PERLBREW_ROOT' => perlbrew_root})
-  if ::File.exists?(perlbrew_bin)
+  command "#{perlbrew_bin} self-upgrade"
+  only_if {::File.exists?(perlbrew_bin)}
 end
 
 # if not, install it
-remote_file "#{Chef::Config[:file_cache_path]}/perlbrew-install" do
-  source "http://install.perlbrew.pl"
-  mode "0644"
-  not_if ::File.exists?(perlbrew_bin)
-end
-
 bash "perlbrew-install" do
   cwd Chef::Config[:file_cache_path]
   environment ({'PERLBREW_ROOT' => perlbrew_root})
-  not_if ::File.exists?(perlbrew_bin)
+  code <<-EOC
+  curl -kL http://install.perlbrew.pl > perlbrew-install
+  source perlbrew-install
+  EOC
+  not_if {::File.exists?(perlbrew_bin)}
 end
