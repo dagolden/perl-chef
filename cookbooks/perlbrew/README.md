@@ -24,6 +24,7 @@ Attributes
 
 * `node['perlbrew']['perlbrew_root'] = "/opt/perlbrew"` - Sets the `PERLBREW_ROOT` environment variable
 * `node['perlbrew']['perls'] = []` - An array of perls to install, e.g. `["perl-5.14.2", "perl-5.12.3"]`
+* `node['perlbrew']['install_options'] = ''` - A string of command line options for `perlbrew install`, e.g. `-D usethreads` for building all perls with threads
 
 Recipes
 =======
