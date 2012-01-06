@@ -73,6 +73,7 @@ Actions:
 Attributes
 
 * :version - the version of perl to install, in the "perl-X.Y.Z" format that perlbrew expects
+* :install_options - overrides the default install options on the node. (Not recommended.)
 
 Usage
 =====
