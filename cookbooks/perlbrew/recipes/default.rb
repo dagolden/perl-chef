@@ -30,9 +30,13 @@ directory perlbrew_root
 
 # if we have perlbrew, upgrade it
 # XXX is this really a good idea?
-execute "perlbrew self-upgrade" do
+bash "perlbrew self-upgrade" do
   environment ({'PERLBREW_ROOT' => perlbrew_root})
-  command "#{perlbrew_bin} self-upgrade"
+  code <<-EOC
+  #{perlbrew_bin} self-upgrade
+  #{perlbrew_bin} -f install-patchperl
+  #{perlbrew_bin} -f install-cpanm
+  EOC
   only_if {::File.exists?(perlbrew_bin)}
 end
 
@@ -43,6 +47,7 @@ bash "perlbrew-install" do
   code <<-EOC
   curl -kL http://install.perlbrew.pl > perlbrew-install
   source perlbrew-install
+  #{perlbrew_root}/bin/perlbrew -f install-cpanm
   EOC
   not_if {::File.exists?(perlbrew_bin)}
 end

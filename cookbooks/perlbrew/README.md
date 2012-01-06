@@ -32,8 +32,9 @@ Recipes
 perlbrew
 ----------
 
-Installs/updates perlbrew.  This is required for use of the LWRP.  Optionally
-installs perls specified in the `node['perlbrew']['perls']` attribute list.
+Installs/updates perlbrew along with patchperl and cpanm.  This is required for
+use of the LWRP.  Optionally installs perls specified in the
+`node['perlbrew']['perls']` attribute list.
 
 Resources/Providers
 ===================
