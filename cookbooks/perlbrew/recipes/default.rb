@@ -2,7 +2,7 @@
 # Cookbook Name:: perlbrew
 # Recipe:: default
 #
-# Copyright 2012, David Golden
+# Copyright 2012, David A. Golden
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,3 +16,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+prereqs = [ "build-essential", "perl", "curl" ]
+
+prereqs.each do |p|
+  package p
+end
+
+perlbrew_root = node['perlbrew']['perlbrew_root']
+perlbrew_bin = "#{perlbrew_root}/bin/perlbrew"
+
+# if we have perlbrew, upgrade it
+bash "perlbrew self-upgrade" do
+  command = "#{perlbrew_bin} self-upgrade"
+  environment ({'PERLBREW_ROOT' => perlbrew_root})
+  if ::File.exists?(perlbrew_bin)
+end
+
+# if not, install it
+remote_file "#{Chef::Config[:file_cache_path]}/perlbrew-install" do
+  source "http://install.perlbrew.pl"
+  mode "0644"
+  not_if ::File.exists?(perlbrew_bin)
+end
+
+bash "perlbrew-install" do
+  cwd Chef::Config[:file_cache_path]
+  environment ({'PERLBREW_ROOT' => perlbrew_root})
+  not_if ::File.exists?(perlbrew_bin)
+end
