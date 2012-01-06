@@ -19,4 +19,5 @@
 #
 
 default['perlbrew']['perlbrew_root'] = '/opt/perlbrew'
+default['perlbrew']['perls'] = []
 

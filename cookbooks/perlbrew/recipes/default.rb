@@ -46,3 +46,12 @@ bash "perlbrew-install" do
   EOC
   not_if {::File.exists?(perlbrew_bin)}
 end
+
+# were any perls requested in attributes?
+if node['perlbrew']['perls']
+  node['perlbrew']['perls'].each do |p|
+    perlbrew_perl p do
+      action :install
+    end
+  end
+end
