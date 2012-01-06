@@ -28,14 +28,17 @@ Attributes
 Recipes
 =======
 
-`perlbrew`
+perlbrew
 ----------
+
+Installs/updates perlbrew.  This is required for use of the LWRP.  Optionally
+installs perls specified in the `node['perlbrew']['perls']` attribute list.
 
 Resources/Providers
 ===================
 
-`perlbrew_perl`
----------------
+perlbrew_perl
+-------------
 
 This LWRP installs perls into `node['perlbrew']['perlbrew_root']` using
 perlbrew.
