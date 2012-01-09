@@ -1,7 +1,7 @@
 #
 # Author:: David A. Golden
 # Cookbook Name:: perlbrew
-# Provider:: perlbrew_perl
+# Provider:: perlbrew_lib
 #
 # Copyright:: 2012, David A. Golden <dagolden@cpan.org>
 #
@@ -22,22 +22,28 @@ require 'chef/mixin/shell_out'
 require 'chef/mixin/language'
 include Chef::Mixin::ShellOut
 
+# XXX must be a fully qualified 'perl-5.X.Y@libname' style name
 action :create do
-  unless @perl.created
+  unless @lib.created
     execute "Create perlbrew lib #{new_resource.name}" do
-      environment ({'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root']})
-      environment ({'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']})
+      environment ({
+        'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root'],
+        'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']
+      })
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew lib create #{new_resource.name}"
     end
     new_resource.updated_by_last_action(true)
   end
 end
 
+# XXX must be a fully qualified 'perl-5.X.Y@libname' style name
 action :delete do
-  if @perl.installed
+  if @lib.created
     execute "Remove perlbrew #{new_resource.name}" do
-      environment ({'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root']})
-      environment ({'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']})
+      environment ({
+        'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root'],
+        'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']
+      })
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew lib delete #{new_resource.name}"
     end
     new_resource.updated_by_last_action(true)
@@ -46,6 +52,6 @@ end
 
 def load_current_resource
   @lib = Chef::Resource::PerlbrewLib.new(new_resource.name)
-  @perl.created(::File.exists?("#{node['perlbrew']['perlbrew_root']}/perls/#{@perl.name}"))
+  @lib.created(::File.exists?("#{node['perlbrew']['perlbrew_root']}/libs/#{@lib.name}"))
 end
 

@@ -1,7 +1,7 @@
 #
 # Author:: David A. Golden
 # Cookbook Name:: perlbrew
-# Resource:: perlbrew_perl
+# Resource:: perlbrew_lib
 #
 # Copyright:: 2012, David A. Golden <dagolden@cpan.org>
 #
