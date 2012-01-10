@@ -30,6 +30,7 @@ action :run do
   }
   bash new_resource.name do
     environment new_resource.environment.merge(perlbrew_env)
+    cwd new_resource.cwd if new_resource.cwd
     code <<-EOC
     source #{node['perlbrew']['perlbrew_root']}/etc/bashrc
     perlbrew use #{new_resource.perlbrew}
