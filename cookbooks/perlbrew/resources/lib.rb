@@ -21,3 +21,8 @@
 actions :create, :delete
 
 attribute :created, :default => false
+
+def initialize(*args)
+  super
+  @action = :create
+end

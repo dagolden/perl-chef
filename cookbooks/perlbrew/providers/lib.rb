@@ -54,8 +54,3 @@ def load_current_resource
   @lib = Chef::Resource::PerlbrewLib.new(new_resource.name)
   @lib.created(::File.exists?("#{node['perlbrew']['perlbrew_root']}/libs/#{@lib.name}"))
 end
-
-def initialize(*args)
-  super
-  @action = :create
-end

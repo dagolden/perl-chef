@@ -48,8 +48,3 @@ def load_current_resource
   @perl = Chef::Resource::PerlbrewPerl.new(new_resource.name)
   @perl.installed(::File.exists?("#{node['perlbrew']['perlbrew_root']}/perls/#{@perl.name}"))
 end
-
-def initialize(*args)
-  super
-  @action = :install
-end

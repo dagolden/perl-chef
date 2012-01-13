@@ -29,3 +29,8 @@ attribute :command, :name_attribute => true, :kind_of => String
 attribute :perlbrew, :kind_of => String, :required => true
 attribute :cwd, :kind_of => String
 attribute :environment, :kind_of => Hash, :default => {}
+
+def initialize(*args)
+  super
+  @action = :run
+end

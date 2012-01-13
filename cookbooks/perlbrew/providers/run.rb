@@ -39,8 +39,3 @@ action :run do
   end
   new_resource.updated_by_last_action(true)
 end
-
-def initialize(*args)
-  super
-  @action = :run
-end
