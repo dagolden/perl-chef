@@ -1,0 +1,6 @@
+#!/bin/bash
+source <%= @options[:perlbrew_root] %>/etc/bashrc
+cd <%= @options[:resource].cwd %>
+perlbrew use <%= @options[:resource].perlbrew %>
+exec chpst -u <%= @options[:resource].user %>:<%= @options[:resource].group %> <%= @options[:resource].command %>
+
