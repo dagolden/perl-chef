@@ -22,8 +22,6 @@ require 'chef/mixin/shell_out'
 require 'chef/mixin/language'
 include Chef::Mixin::ShellOut
 
-include_recipe "runit"
-
 # XXX must be a fully qualified 'perl-5.X.Y@libname' style name
 action :create do
   perlbrew_env = {
@@ -31,15 +29,25 @@ action :create do
     'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']
   }
 
+  my_perlbrew       = new_resource.perlbrew
+  my_cwd            = new_resource.cwd
+  my_user           = new_resource.user
+  my_group          = new_resource.group
+  my_command        = new_resource.command
+  my_env            = new_resource.environment.merge(perlbrew_env)
+
   runit_service new_resource.name do
     template_name 'perlbrew-service'
     cookbook 'perlbrew'
     options(
       :perlbrew_root  => node['perlbrew']['perlbrew_root'],
-      :resource       => new_resource
+      :perlbrew => my_perlbrew,
+      :user     => my_user,
+      :group    => my_group,
+      :command  => my_command,
+      :cwd      => my_cwd
     )
-    env new_resource.environment.merge(perlbrew_env)
-    run_restart false
+    env my_env
   end
 end
 

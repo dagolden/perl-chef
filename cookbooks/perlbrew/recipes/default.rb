@@ -23,6 +23,8 @@ prereqs.each do |p|
   package p
 end
 
+include_recipe "runit"
+
 perlbrew_root = node['perlbrew']['perlbrew_root']
 perlbrew_bin = "#{perlbrew_root}/bin/perlbrew"
 

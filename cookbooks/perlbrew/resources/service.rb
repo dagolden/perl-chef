@@ -20,14 +20,15 @@
 
 actions :create
 
+attribute :perlbrew, :kind_of => String, :required => true
+attribute :command, :kind_of => String, :required => true
+attribute :user, :kind_of => String, :default => "nobody"
+attribute :group, :kind_of => String, :default => "nobody"
+attribute :cwd, :kind_of => String, :default => "/"
+attribute :environment, :kind_of => Hash, :default => {}
+
 def initialize(*args)
   super
   @action = :create
 end
 
-attribute :perlbrew, :kind_of => String, :required => true
-attribute :command, :kind_of => String, :required => true
-attribute :user, :kind_of => String, :default => "nobody"
-attribute :group, :kind_of => String, :default => "nobody"
-attribute :cwd, :kind_of => String, :default "/"
-attribute :environment, :kind_of => Hash, :default => {}
