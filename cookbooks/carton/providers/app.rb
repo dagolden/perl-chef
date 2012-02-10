@@ -23,7 +23,7 @@ require 'chef/mixin/language'
 include Chef::Mixin::ShellOut
 
 
-action :create do
+action :enable do
   # XXX should probably fail if no carton.lock is found in cwd
 
   app_perlbrew       = new_resource.perlbrew
@@ -48,6 +48,7 @@ action :create do
 
   # If local directory for current carton.lock exists, skip
   # carton install
+  updated = false
   unless ::File.exists?("#{app_cwd}/#{app_local}")
     perlbrew_perl carton_perlbrew
     perlbrew_lib carton_lib
@@ -62,13 +63,14 @@ action :create do
       cwd app_cwd
       command "carton install"
     end
+    updated = true
   end
 
   # XXX should be idempotent
-  runit_service new_resource.name do
-    template_name 'carton-app'
-    cookbook 'carton'
-    options(
+  r = runit_service new_resource.name do
+    action :enable
+    directory "/etc/sv/#{new_resource.name}"
+    variables(
       :perlbrew_root  => node['perlbrew']['perlbrew_root'],
       :perlbrew => carton_lib,
       :user     => app_user,
@@ -77,35 +79,32 @@ action :create do
       :cwd      => app_cwd
     )
     env app_env
+    log true
   end
-end
-
-action :enable do
-  service new_resource.name do
-    action :enable
-  end
+  new_resource.updated_by_last_action(updated || r.updated_by_last_action?)
 end
 
 action :disable do
-  service new_resource.name do
+  r = runit_service new_resource.name do
     action :disable
   end
+  new_resource.updated_by_last_action(r.updated_by_last_action?)
 end
 
 action :start do
-  service new_resource.name do
+  runit_service new_resource.name do
     action :start
   end
 end
 
 action :stop do
-  service new_resource.name do
+  runit_service new_resource.name do
     action :stop
   end
 end
 
 action :restart do
-  service new_resource.name do
+  runit_service new_resource.name do
     action :restart
   end
 end

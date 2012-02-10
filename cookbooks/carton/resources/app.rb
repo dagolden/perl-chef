@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-actions :create, :enable, :disable, :start, :stop, :restart
+actions :enable, :disable, :start, :stop, :restart
 
 attribute :perlbrew, :kind_of => String, :required => true
 attribute :command, :kind_of => String, :required => true
@@ -30,6 +30,6 @@ attribute :environment, :kind_of => Hash, :default => {}
 
 def initialize(*args)
   super
-  @action = :create
+  @action = :enable
 end
 
