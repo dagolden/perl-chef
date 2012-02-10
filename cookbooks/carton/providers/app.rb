@@ -22,6 +22,7 @@ require 'chef/mixin/shell_out'
 require 'chef/mixin/language'
 include Chef::Mixin::ShellOut
 
+
 action :create do
   # XXX should probably fail if no carton.lock is found in cwd
 
@@ -45,19 +46,25 @@ action :create do
   carton_perlbrew = app_perlbrew || node['carton']['perlbrew']
   carton_lib = "#{carton_perlbrew}@carton"
 
-  perlbrew_perl carton_perlbrew
-  perlbrew_lib carton_lib
-  perlbrew_run "cpanm Carton" do
-    perlbrew carton_lib
+  # If local directory for current carton.lock exists, skip
+  # carton install
+  unless ::File.exists?("#{app_cwd}/#{app_local}")
+    perlbrew_perl carton_perlbrew
+    perlbrew_lib carton_lib
+
+    perlbrew_run "cpanm Carton" do
+      perlbrew carton_lib
+    end
+
+    perlbrew_run "carton install hello-world" do
+      perlbrew carton_lib
+      environment app_env
+      cwd app_cwd
+      command "carton install"
+    end
   end
 
-  perlbrew_run "carton install hello-world" do
-    perlbrew carton_lib
-    environment app_env
-    cwd app_cwd
-    command "carton install"
-  end
-
+  # XXX should be idempotent
   runit_service new_resource.name do
     template_name 'carton-app'
     cookbook 'carton'
