@@ -23,12 +23,18 @@ require 'chef/mixin/language'
 include Chef::Mixin::ShellOut
 
 action :create do
+  # XXX should probably fail if no carton.lock is found in cwd
+
   app_perlbrew       = new_resource.perlbrew
-  app_cwd            = new_resource.cwd
   app_user           = new_resource.user
   app_group          = new_resource.group
-  app_local          = "local-#{app_perlbrew}"
+  app_cwd            = new_resource.cwd
   app_command        = "carton exec -I lib -- #{new_resource.command}"
+
+  # hash carton.lock to ensure library dir is unique to a lock file
+  lock_hash = `sha1sum #{app_cwd}/carton.lock`[0..7]
+
+  app_local          = "local-#{app_perlbrew}-#{lock_hash}"
   app_env            = new_resource.environment.merge({
     'PERLBREW_ROOT'     => node['perlbrew']['perlbrew_root'],
     'PERLBREW_HOME'     => node['perlbrew']['perlbrew_root'],
