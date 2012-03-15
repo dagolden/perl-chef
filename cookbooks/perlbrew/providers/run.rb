@@ -36,6 +36,7 @@ action :run do
     perlbrew use #{new_resource.perlbrew}
     #{new_resource.command}
     EOC
+    action :nothing
   end
   b.run_action(:run)
   new_resource.updated_by_last_action(true)

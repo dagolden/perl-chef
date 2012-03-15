@@ -21,7 +21,8 @@
 actions :create, :delete
 
 attribute :created, :default => false
-attribute :perlbrew_created, :default => false
+attribute :perlbrew, :kind_of => String
+attribute :perlbrew_installed, :default => false
 
 def initialize(*args)
   super

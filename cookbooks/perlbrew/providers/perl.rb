@@ -29,6 +29,7 @@ action :install do
     e = execute "Install perlbrew perl #{new_resource.name}" do
       environment ({'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root']})
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew install #{new_resource.version} --as #{new_resource.name} #{new_resource.install_options}"
+      action :nothing
     end
     e.run_action(:run)
     @perl.installed(true)
@@ -41,6 +42,7 @@ action :remove do
     e = execute "Remove perlbrew perl #{new_resource.name}" do
       environment ({'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root']})
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew uninstall #{new_resource.name}"
+      action :nothing
     end
     e.run_action(:run)
     @perl.installed(false)
