@@ -26,20 +26,24 @@ action :install do
   unless @perl.installed
     new_resource.version(new_resource.name) if not new_resource.version
     new_resource.install_options(node['perlbrew']['install_options']) if not new_resource.install_options
-    execute "Install perlbrew perl #{new_resource.name}" do
+    e = execute "Install perlbrew perl #{new_resource.name}" do
       environment ({'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root']})
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew install #{new_resource.version} --as #{new_resource.name} #{new_resource.install_options}"
     end
+    e.run_action(:run)
+    @perl.installed(true)
     new_resource.updated_by_last_action(true)
   end
 end
 
 action :remove do
   if @perl.installed
-    execute "Remove perlbrew perl #{new_resource.name}" do
+    e = execute "Remove perlbrew perl #{new_resource.name}" do
       environment ({'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root']})
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew uninstall #{new_resource.name}"
     end
+    e.run_action(:run)
+    @perl.installed(false)
     new_resource.updated_by_last_action(true)
   end
 end
