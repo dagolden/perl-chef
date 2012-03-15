@@ -24,33 +24,44 @@ include Chef::Mixin::ShellOut
 
 # XXX must be a fully qualified 'perl-5.X.Y@libname' style name
 action :create do
+  updated = false
+  unless @lib.perlbrew_created
+    p = perlbrew_perl @lib.perlbrew
+    p.run_action(:install)
+    updated = true
+  end
   unless @lib.created
-    execute "Create perlbrew lib #{new_resource.name}" do
+    e = execute "Create perlbrew lib #{new_resource.name}" do
       environment ({
         'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root'],
         'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']
       })
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew lib create #{new_resource.name}"
     end
-    new_resource.updated_by_last_action(true)
+    e.run_action(:run)
+    updated = true
   end
+  new_resource.updated_by_last_action(updated)
 end
 
 # XXX must be a fully qualified 'perl-5.X.Y@libname' style name
 action :delete do
   if @lib.created
-    execute "Remove perlbrew #{new_resource.name}" do
+    e = execute "Remove perlbrew #{new_resource.name}" do
       environment ({
         'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root'],
         'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']
       })
       command "#{node['perlbrew']['perlbrew_root']}/bin/perlbrew lib delete #{new_resource.name}"
     end
+    e.run_action(:run)
     new_resource.updated_by_last_action(true)
   end
 end
 
 def load_current_resource
   @lib = Chef::Resource::PerlbrewLib.new(new_resource.name)
+  @lib.perlbrew = @lib.name[/[^@]+/]
+  @lib.perlbrew_installed(::File.exists?("#{node['perlbrew']['perlbrew_root']}/perls/#{@lib.perlbrew}"))
   @lib.created(::File.exists?("#{node['perlbrew']['perlbrew_root']}/libs/#{@lib.name}"))
 end
