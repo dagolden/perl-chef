@@ -28,7 +28,7 @@ action :run do
     'PERLBREW_ROOT' => node['perlbrew']['perlbrew_root'],
     'PERLBREW_HOME' => node['perlbrew']['perlbrew_root']
   }
-  bash new_resource.name do
+  b = bash new_resource.name do
     environment new_resource.environment.merge(perlbrew_env)
     cwd new_resource.cwd if new_resource.cwd
     code <<-EOC
@@ -37,5 +37,6 @@ action :run do
     #{new_resource.command}
     EOC
   end
+  b.run_action(:run)
   new_resource.updated_by_last_action(true)
 end
