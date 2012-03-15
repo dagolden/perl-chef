@@ -104,9 +104,8 @@ action :stop do
 end
 
 action :restart do
-  runit_service new_resource.name do
-    action :restart
-  end
+  r = runit_service new_resource.name
+  r.run_action(:restart)
 end
 
 # :enable :disable :nothing :start :stop :restart :reload}
