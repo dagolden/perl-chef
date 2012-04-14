@@ -84,9 +84,9 @@ perl.
 
 Example:
 
-  perlbrew_lib 'perl-5.14.2@mylib' do
-    action :create
-  end
+    perlbrew_lib 'perl-5.14.2@mylib' do
+      action :create
+    end
 
 This is equivalent to `perlbrew lib create perl-5.14.2@mylib`
 
@@ -110,15 +110,15 @@ cpanm (App::cpanminus).
 
 Example:
 
-  perlbrew_cpanm 'Modern Perl modules' do
-    perlbrew 'perl-5.14.2@mylib'
-    modules ['Modern::Perl', 'Task::Kensho']
-  end
+    perlbrew_cpanm 'Modern Perl modules' do
+      perlbrew 'perl-5.14.2@mylib'
+      modules ['Modern::Perl', 'Task::Kensho']
+    end
 
 This is equivalent to
 
-  $ perlbrew use perl-5.14.2@mylib
-  $ cpanm Modern::Perl Task::Kensho
+    $ perlbrew use perl-5.14.2@mylib
+    $ cpanm Modern::Perl Task::Kensho
 
 Note that the resource name "Modern Perl modules" will be associated with a set of
 modules only once.  The name should be unique for any particular chef run.
@@ -141,26 +141,26 @@ This LWRP runs a bash command in the context of a given perlbrew perl or local::
 
 Example 1:
 
-  perlbrew_run 'Perl hello world' do
-    perlbrew 'perl-5.14.2@mylib'
-    command "perl -wE 'say q{Hello World}'"
-  end
+    perlbrew_run 'Perl hello world' do
+      perlbrew 'perl-5.14.2@mylib'
+      command "perl -wE 'say q{Hello World}'"
+    end
 
 This is equivalent to
 
-  $ perlbrew use perl-5.14.2@mylib
-  $ perl -wE 'say q{Hello World}'
+    $ perlbrew use perl-5.14.2@mylib
+    $ perl -wE 'say q{Hello World}'
 
 Example 2:
 
-  perlbrew_run 'hello-world.pl' do
-    perlbrew 'perl-5.14.2@mylib'
-  end
+    perlbrew_run 'hello-world.pl' do
+      perlbrew 'perl-5.14.2@mylib'
+    end
 
 This is equivalent to
 
-  $ perlbrew use perl-5.14.2@mylib
-  $ hello-world.pl
+    $ perlbrew use perl-5.14.2@mylib
+    $ hello-world.pl
 
 Note that the resource name will only be executed once for a given chef run.
 
