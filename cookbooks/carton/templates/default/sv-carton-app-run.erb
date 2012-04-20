@@ -1,8 +1,8 @@
 #!/bin/bash
-export PERLBREW_ROOT=<%= @options[:perlbrew_root] %>
-export PERLBREW_HOME=<%= @options[:perlbrew_root] %>
+export PERLBREW_ROOT=<%= @variables[:perlbrew_root] %>
+export PERLBREW_HOME=<%= @variables[:perlbrew_root] %>
 source $PERLBREW_ROOT/etc/bashrc
-perlbrew use <%= @options[:perlbrew] %>
+perlbrew use <%= @variables[:perlbrew] %>
 svc_dir=$(pwd)
-cd <%= @options[:cwd] %>
-exec chpst -e $svc_dir/env -u<%= @options[:user] %>:<%= @options[:group] %> <%= @options[:command] %>
+cd <%= @variables[:cwd] %>
+exec chpst -e $svc_dir/env -u<%= @variables[:user] %>:<%= @variables[:group] %> <%= @variables[:command] %>

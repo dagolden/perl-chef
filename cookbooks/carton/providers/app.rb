@@ -70,6 +70,8 @@ action :enable do
   r = runit_service new_resource.name do
     action :enable
     directory "/etc/sv/#{new_resource.name}"
+    template "carton-app"
+    cookbook "carton"
     variables(
       :perlbrew_root  => node['perlbrew']['perlbrew_root'],
       :perlbrew => carton_lib,
