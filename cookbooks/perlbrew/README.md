@@ -4,8 +4,11 @@ Description
 Installs perlbrew and provides resource/provider types for managing
 perls with perlbrew.
 
-To date, this cookbook has only been designed and tested on the
-Ubuntu and Debian platforms.
+To date, this cookbook has been designed and tested on the following platforms:
+* Ubuntu
+* Debian
+* CentOS 6
+* Amazon Linux
 
 Requirements
 ============
@@ -17,7 +20,9 @@ installed if missing)
 
 * curl
 * perl
-* build-essential
+* patch
+
+The ```build-essential``` <https://github.com/opscode-cookbooks/build-essential> cookbook will install the packages required for compiling Perl.
 
 Attributes
 ==========
