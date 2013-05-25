@@ -20,6 +20,7 @@
 
 actions :run
 
+attribute :options, :kind_of => String
 attribute :perlbrew, :kind_of => String, :required => true
 attribute :modules, :kind_of => Array, :default => []
 
