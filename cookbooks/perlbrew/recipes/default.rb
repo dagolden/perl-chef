@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 
-prereqs = [ "build-essential", "perl", "curl" ]
+include_recipe "build-essential"
 
-prereqs.each do |p|
+%w{ patch perl curl }.each do |p|
   package p
 end
 

@@ -5,5 +5,9 @@ version          "0.1.0"
 description      "Installs/Configures perlbrew"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 recipe           "perlbrew::default", "Installs/updates perlbrew"
-supports         "debian"
-supports         "ubuntu"
+
+%w{ debian ubuntu centos amazon }.each do |os|
+  supports os
+end
+
+depends "build-essential"
