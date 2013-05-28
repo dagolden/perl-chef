@@ -29,7 +29,6 @@ perlbrew_bin = "#{perlbrew_root}/bin/perlbrew"
 directory perlbrew_root
 
 # if we have perlbrew, upgrade it
-# XXX is this really a good idea?
 bash "perlbrew self-upgrade" do
   environment ({'PERLBREW_ROOT' => perlbrew_root})
   code <<-EOC
@@ -37,7 +36,7 @@ bash "perlbrew self-upgrade" do
   #{perlbrew_bin} -f install-patchperl
   #{perlbrew_bin} -f install-cpanm
   EOC
-  only_if {::File.exists?(perlbrew_bin)}
+  only_if {::File.exists?(perlbrew_bin) and node['perlbrew']['self_upgrade']}
 end
 
 # if not, install it
