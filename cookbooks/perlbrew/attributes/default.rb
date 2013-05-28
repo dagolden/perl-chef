@@ -26,4 +26,4 @@ default['perlbrew']['perls'] = []
 # attribute is given
 default['perlbrew']['install_options'] = ''
 default['perlbrew']['cpanm_options'] = ''
-
+default['perlbrew']['self_upgrade'] = true

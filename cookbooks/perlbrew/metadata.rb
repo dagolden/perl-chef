@@ -1,3 +1,4 @@
+name             "perlbrew"
 maintainer       "David Golden"
 maintainer_email "dagolden@cpan.org"
 license          "Apache 2.0"
