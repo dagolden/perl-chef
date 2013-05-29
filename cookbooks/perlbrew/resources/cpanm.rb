@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-actions :install
+actions :install, :run
 default_action :install
 
 attribute :options, :kind_of => String
