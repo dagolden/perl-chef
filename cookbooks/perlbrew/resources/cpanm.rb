@@ -18,13 +18,9 @@
 # limitations under the License.
 #
 
-actions :run
+actions :install, :run
+default_action :install
 
 attribute :options, :kind_of => String
 attribute :perlbrew, :kind_of => String, :required => true
 attribute :modules, :kind_of => Array, :default => []
-
-def initialize(*args)
-  super
-  @action = :install
-end
