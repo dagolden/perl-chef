@@ -36,3 +36,5 @@ action :install do
   p.run_action(:run)
   new_resource.updated_by_last_action(true)
 end
+
+alias_method :action_run, :action_install
